@@ -1,21 +1,16 @@
 ﻿using System.Runtime.InteropServices;
-using Windows.Win32.Foundation;
 using Windows.Win32.Networking.WinInet;
 
 var uri = "https://dummy.internal";
 
-var provider = (IProofOfPossessionCookieInfoManager)new ProofOfPossessionCookieInfoManager();
+var provider = new IProofOfPossessionCookieInfoManager();
 
 unsafe
 {
-    fixed (char* pMessage = uri)
-    {
-        var uriPointer = new PCWSTR(pMessage);
-        ProofOfPossessionCookieInfo* cookieInfoPtr = null;
-        provider.GetCookieInfoForUri(uriPointer, out var cookieInfoCount, &cookieInfoPtr);
+    ProofOfPossessionCookieInfo* cookieInfoPtr = null;
+    provider.GetCookieInfoForUri(uri, out var cookieInfoCount, &cookieInfoPtr);
 
-        Marshal.FreeCoTaskMem((nint)cookieInfoPtr);
+    Marshal.FreeCoTaskMem((nint)cookieInfoPtr);
 
-        Console.WriteLine($"cookieInfoCount: {cookieInfoCount}");
-    }
+    Console.WriteLine($"cookieInfoCount: {cookieInfoCount}");
 }
