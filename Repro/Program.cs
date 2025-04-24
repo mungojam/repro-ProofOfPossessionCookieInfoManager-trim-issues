@@ -15,7 +15,7 @@ unsafe
     
     ProofOfPossessionCookieInfo* cookieInfoPtr = null;
     provider->GetCookieInfoForUri(uri, out var cookieInfoCount, &cookieInfoPtr);
-
+    provider->Release();
     Marshal.FreeCoTaskMem((nint)cookieInfoPtr);
 
     Console.WriteLine($"cookieInfoCount: {cookieInfoCount}");
